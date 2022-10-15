@@ -1,57 +1,49 @@
-import sys, hashlib, getpass                                                                #importing required libraries
+import sys, hashlib, getpass
 
-#hash - sha256 hashing function using python library - hashlib used to encrypt password before storing
-
-class hash:                                                                                 #defining class hash
+class hash:
 
     def __init__(self,data):
-        self.hash_value = hashlib.sha256(data.encode())                                     #sha256 hashing function
+        self.hash_value = hashlib.sha256(data.encode())
     
     def get_hash(self):
-        return self.hash_value.hexdigest()                                                  #returns hashvalue to authorize login 
-
-#hashtable - stores all the user accounts after encryption, perform operations in O(1), O(n)
+        return self.hash_value.hexdigest()
 
 class hashtable:
     
     def __init__(self):
-        self.table = {}                                                                     #table stores all the accounts
+        self.table = {}
     
     def add(self,data):
-        self.table[data.password] = data                                                    #using password as key and name as value, adding new users
+        self.table[data.password] = data
 
     def get(self,data):
-        return self.table.get(data)                                                         #returns the password for the requested user
+        return self.table.get(data)
 
-    def show(self):                                                                         #prints all the usernames
+    def show(self):
         for i in self.table:
-            print("\t",self.table[i].name)                                                  
-
-#queue - used along with djikstra algorithm to find the route taken to the destination
+            print("\t",self.table[i].name)
 
 class queue:
     
     def __init__(self):
-        self.q = []                                                                         #q stores the cities in a specific order
+        self.q = []
     
-    def enqueue(self,data):                                                                 #adding new city to the queue
+    def enqueue(self,data):
         self.q.append(data)
     
-    def dequeue(self):                                                                      #return the next city to be travelled
+    def dequeue(self):
         if(self.empty() != True):
             return self.q.pop(0)
     
-    def empty(self):                                                                        #returns if the queue is empty
+    def empty(self):
         return self.q == []
-
-#splaytree - used to store the admin user details as it suits the data structure property more 
 
 class splaytree:
 
-    def __init__(self):                                                                     #initalizing root node
+    def __init__(self):
         self.root = None
 
-    def zag(self, x):                                                                       #node left rotation
+    def zag(self, x):
         y = x.right
         x.right = y.left
         if y.left != None:
@@ -66,7 +58,7 @@ class splaytree:
         y.left = x
         x.parent = y
 
-    def zig(self, x):                                                                       #node right rotation
+    def zig(self, x):
         y = x.left
         x.left = y.right
         if y.right != None:
@@ -81,23 +73,23 @@ class splaytree:
         y.right = x
         x.parent = y
     
-    def zigzig(self,p,g):                                                                   #node right-right rotation
+    def zigzig(self,p,g):
         self.zig(g)
         self.zig(p)
 
-    def zagzag(self,p,g):                                                                   #node left-left rotation
+    def zagzag(self,p,g):
         self.zag(g)
         self.zag(p)
     
-    def zagzig(self,p,g):                                                                   #node right-left rotation
+    def zagzig(self,p,g):
         self.zag(p)
         self.zig(g)
     
-    def zigzag(self,p,g):                                                                   #node left-right rotation
+    def zigzag(self,p,g):
         self.zig(p)
         self.zag(g)
 
-    def splay(self, n):                                                                     #splaying the node to the root
+    def splay(self, n):
         while (n.parent != None):
             if (n.parent == self.root):
                 if (n == n.parent.left):
@@ -116,7 +108,7 @@ class splaytree:
                 elif (n.parent.left == n and p.parent.right == p):
                     self.zigzag(p,g)
 
-    def insert(self, n):                                                                    #inserting new eletment to the tree
+    def insert(self, n):
         y = None
         temp = self.root
         while (temp != None):
@@ -134,7 +126,7 @@ class splaytree:
             y.right = n
         self.splay(n)
 
-    def Search(self, n, x):                                                                 #searching for a user in the tree 
+    def Search(self, n, x):
         if(n != None):
             if (x.name == n.name):
                 self.splay(n)
@@ -146,18 +138,16 @@ class splaytree:
         else:
             return None
     
-    def show(self,root):                                                                    #printing all the admin users
+    def show(self,root):
         if(root != None):
             print("\t",root.name)
             admins.show(root.left)
             admins.show(root.right)
 
-#graph - stores the cities, flight details as adjacency matrix and uses djikstra for computation
-
 class graph:
     
     def __init__(self):
-        self.w_dist = [[0,79,0,34,0,0,87,0,74,21],                                          #distance between two airports
+        self.w_dist = [[0,79,0,34,0,0,87,0,74,21],
                        [0,0,26,0,69,92,0,17,24,0],
                        [38,0,0,0,32,0,99,14,0,63],
                        [25,47,53,0,0,31,0,0,0,42],
@@ -166,8 +156,8 @@ class graph:
                        [62,0,93,28,0,23,0,0,29,0],
                        [19,0,29,0,51,0,59,0,28,0],
                        [0,23,46,0,82,52,61,0,0,0],
-                       [14,0,0,37,0,0,53,65,79,0]]                                              
-        self.w_time = [[0,3,0,2,0,0,4,0,4,3],                                               #flight time duration
+                       [14,0,0,37,0,0,53,65,79,0]]
+        self.w_time = [[0,3,0,2,0,0,4,0,4,3],
                        [0,0,2,0,4,5,0,1,2,0],
                        [4,0,0,0,4,0,5,1,0,3],
                        [2,3,2,0,0,3,0,0,0,3],
@@ -177,7 +167,7 @@ class graph:
                        [1,0,2,0,3,0,3,0,2,0],
                        [0,2,3,0,4,3,3,0,0,0],
                        [1,0,0,2,0,0,3,3,4,0]]
-        self.w_cost = [[0,39,0,17,0,0,45,0,36,10],                                          #Flight ticket cost 
+        self.w_cost = [[0,39,0,17,0,0,45,0,36,10],
                        [0,0,13,0,35,46,0,8,12,0],
                        [19,0,0,0,16,0,50,7,0,32],
                        [13,24,26,0,0,16,0,0,0,19],
@@ -187,17 +177,17 @@ class graph:
                        [10,0,15,0,26,0,29,0,13,0],
                        [0,12,23,0,40,25,31,0,0,0],
                        [7,0,0,18,0,0,24,31,38,0]]
-        self.name = ["Berlin ","Rio    ","Tokyo  ","Moscow ","Denver ",                     #list of all city names
+        self.name = ["Berlin ","Rio    ","Tokyo  ","Moscow ","Denver ",
         "Stockholm","Lisbon","Palermo","Helsinki","Nairobi"]
-        self.dist = []                                                                      #shortest path computed matrix for all combination of flight routes                                                     
-        self.time = []                                                                      #fastest path computed matrix for all combination of flight routes
-        self.cost = []                                                                      #cheapest path computed matrix for all combination of flight routes
-        self.p_dist = []                                                                    #will contain computed least distance path
-        self.p_time = []                                                                    #will contain computed fastest path                       
-        self.p_cost = []                                                                    #will contain computed cheapest path
-        self.compute()                                                                      #to compute
+        self.dist = []
+        self.time = []
+        self.cost = []
+        self.p_dist = []
+        self.p_time = []
+        self.p_cost = []
+        self.compute()
 
-    def min_cal(self,val,adj):                                                              #finding closest value neighbour
+    def min_cal(self,val,adj):
         min=sys.maxsize
         for i in range(10):
             if (val[i] < min and adj[i] == False):
@@ -205,7 +195,7 @@ class graph:
                 min_index = i
         return min_index
 
-    def djikstra(self,val,i):                                                               #djikstra shortest path algorithm 
+    def djikstra(self,val,i):
         sol = [sys.maxsize]*10
         sol[i] = 0
         adj = [False]*10
@@ -214,12 +204,12 @@ class graph:
             x = self.min_cal(sol,adj)
             adj[x] = True
             for k in range(10):
-                if(val[x][k] > 0 and adj[k] == False and sol[k] > sol[x]+val[x][k]):        
+                if(val[x][k] > 0 and adj[k] == False and sol[k] > sol[x]+val[x][k]):
                     sol[k] = sol[x]+val[x][k]
                     p[k] = x
         return [sol,p]
 
-    def compute(self):                                                                      #computes fastest, nearest, cheapest paths
+    def compute(self):
         for i in range(10):
             x = self.djikstra(self.w_dist,i)
             self.dist.append(x[0])
@@ -233,7 +223,7 @@ class graph:
             self.cost.append(x[0])
             self.p_cost.append(x[1])
 
-    def add_route(self,src,dst,dist,dur,pri):                                               #adding new route
+    def add_route(self,src,dst,dist,dur,pri):
         self.dist.clear()
         self.cost.clear()
         self.time.clear()
@@ -243,9 +233,9 @@ class graph:
         self.w_cost[src-1][dst-1]=pri
         self.w_time[src-1][dst-1]=dur
         self.w_dist[src-1][dst-1]=dist
-        self.compute()                                                                      #computes new path
+        self.compute()
 
-    def del_route(self,src,dst):                                                            #deleting existing route
+    def del_route(self,src,dst):
         self.dist.clear()
         self.cost.clear()
         self.time.clear()
@@ -255,9 +245,9 @@ class graph:
         self.w_cost[src-1][dst-1]=0
         self.w_time[src-1][dst-1]=0
         self.w_dist[src-1][dst-1]=0
-        self.compute()                                                                      #computes new route
+        self.compute()
 
-    def set_route(self,src,dst,dist,dur,pri):                                               #changing existing route
+    def set_route(self,src,dst,dist,dur,pri):
         self.dist.clear()
         self.cost.clear()
         self.time.clear()
@@ -267,14 +257,14 @@ class graph:
         self.w_cost[src-1][dst-1]=pri
         self.w_time[src-1][dst-1]=dur
         self.w_dist[src-1][dst-1]=dist
-        self.compute()                                                                      #computes new path
+        self.compute()
 
-    def cities(self):                                                                       #prints the list of cities
+    def cities(self):
         print("\n\tC I T I E S\n")
         for i in range(10):
             print("\t",i+1,"\t",self.name[i])
     
-    def add_menu(self):                                                                     #add route menu
+    def add_menu(self):
         x = []
         print("\n\tA D D    R O U T E")
         route.cities()
@@ -285,7 +275,7 @@ class graph:
         x.append(int(input("\t\tEnter Cost  : ")))
         return x
 
-    def del_menu(self):                                                                     #delete route menu
+    def del_menu(self):
         x = []
         print("\n\tD E L E T E    R O U T E")
         route.cities()
@@ -293,7 +283,7 @@ class graph:
         x.append(int(input("\t\tEnter Destination : ")))
         return x
     
-    def set_menu(self):                                                                     #set route menu
+    def set_menu(self):
         x = []
         print("\n\tS E T    R O U T E")
         route.cities()
@@ -304,7 +294,7 @@ class graph:
         x.append(int(input("\t\tEnter Cost  : ")))
         return x
 
-    def time_menu(self):                                                                    #returns the list of cities in fastest route
+    def time_menu(self):
         x = []
         print("\n\tF A S T E S T    R O U T E")
         route.cities()
@@ -312,36 +302,36 @@ class graph:
         x.append(int(input("\t\tTo : ")))
         return x
 
-    def cost_menu(self):                                                                    
+    def cost_menu(self):
         x = []
-        print("\n\tC H E A P E S T    R O U T E")                                           #returns the list of cities in the cheapest route
+        print("\n\tC H E A P E S T    R O U T E")
         route.cities()
         x.append(int(input("\n\t\tFrom : ")))
         x.append(int(input("\t\tTo : ")))
         return x
     
-    def menu(self):                                                                         #view graph menu
+    def menu(self):
         print("\n\tM E N U")
         print("\n\t\t1 - Distance Graph")
         print("\t\t2 - Time Graph")
         print("\t\t3 - Cost Graph")
         return int(input("\n\t\tEnter Choice : "))
 
-    def get_flight_t(self,list,src,dst):                                                    #stores the flight details of fastest route
+    def get_flight_t(self,list,src,dst):
         if(self.p_time[src][dst] == -1):
             list.append(dst)
             return
         self.get_flight_t(list,src,self.p_time[src][dst])
         list.append(dst)
     
-    def get_flight_c(self,list,src,dst):                                                    #stores the flight details of cheapest route
+    def get_flight_c(self,list,src,dst):
         if(self.p_cost[src][dst] == -1):
             list.append(dst)
             return
         self.get_flight_c(list,src,self.p_cost[src][dst])
         list.append(dst)
 
-    def show_dist(self):                                                                    #view distance graph
+    def show_dist(self):
         print("\n\tD I S T A N C E")
         for i in self.w_dist:
             print("\n\t\t",end = "")
@@ -349,7 +339,7 @@ class graph:
                 print(j,end = " ")
         print("\n")
 
-    def show_time(self):                                                                    #view time graph
+    def show_time(self):
         print("\n\tT I M E")
         for i in self.w_time:
             print("\n\t\t",end = "")
@@ -357,7 +347,7 @@ class graph:
                 print(j,end = " ")
         print("\n")
 
-    def show_cost(self):                                                                    #view cost graph
+    def show_cost(self):
         print("\n\tC O S T")
         for i in self.w_cost:
             print("\n\t\t",end = "")
@@ -365,7 +355,7 @@ class graph:
                 print(j,end = " ")
         print("\n")
 
-    def print_route(self,list):                                                             #prints flight details
+    def print_route(self,list):
         t = 0
         c = 0
         flights = queue()
@@ -375,37 +365,34 @@ class graph:
         print("\n\t\tFlight\t\t From\t\t To\t\t Time\t Cost\n")
         while(flights.empty() != True):
             f = flights.dequeue()
-            print("\t\tFlight",str(f.src)+str(f.dst),"\t",route.name[f.src-1],"\t",
-            route.name[f.dst-1],"\t",f.time,"hrs\t $",f.cost,end=",000\n")
+            print("\t\tFlight",str(f.src)+str(f.dst),"\t",route.name[f.src-1],"\t",route.name[f.dst-1],"\t",f.time,"hrs\t $",f.cost,end=",000\n")
             t += f.time
             c += f.cost
         print("\n\t\tDuration :",t,end="hrs")
         print("\t\tCost : $",c,end =",000\n")
 
-    def print_from(self,x):                                                                 #prints available flights from
+    def print_from(self,x):
         for i in range(10):
             if(self.w_dist[x-1][i] != 0):
                 print("\t\t",self.name[i])    
 
-    def print_to(self,x):                                                                   #prints available flights to
+    def print_to(self,x):
         for i in range(10):
             if(self.w_dist[i][x-1] != 0):
                 print("\t\t",self.name[i])
 
-    def get_dist(self,src,dst):                                                             #returns distance
+    def get_dist(self,src,dst):
         return self.w_dist[src][dst]
     
-    def get_time(self,src,dst):                                                             #returns time
+    def get_time(self,src,dst):
         return self.w_time[src][dst]
     
-    def get_cost(self,src,dst):                                                             #returns cost
+    def get_cost(self,src,dst):
         return self.w_cost[src][dst]
-
-#admin - stores the admin login details and has all the functionalities of admin user
 
 class admin:
 
-    def __init__(self,name,password):                                                       #admin details in form of splay tree
+    def __init__(self,name,password):
         self.admin_pw=hash("F1").get_hash()
         self.name=name
         self.password=hash(password).get_hash()
@@ -413,7 +400,7 @@ class admin:
         self.left = None
         self.parent = None
 
-    def login(self):                                                                        #admin login function
+    def login(self):
         print("\n\tL O G I N")
         name = input("\n\t\tEnter Name : ")
         password = getpass.getpass(prompt="\t\tEnter Password : ")
@@ -426,23 +413,22 @@ class admin:
             elif (x==2):
                 self.create_acc()
     
-    def create_acc(self):                                                                   #creates new admin login
+    def create_acc(self):
         if(self.admin_auth()==True):
             print("\n\tC R E A T E    A C C O U N T")
-            admins.insert(admin(input("\n\t\tEnter Name : "),
-            getpass.getpass(prompt="\t\tEnter Password : ")))
+            admins.insert(admin(input("\n\t\tEnter Name : "),getpass.getpass(prompt="\t\tEnter Password : ")))
             self.login()
         else:
             self.login()
 
-    def admin_auth(self):                                                                   #admin password authentication function
+    def admin_auth(self):
         password=hash(getpass.getpass(prompt="\n\t\tEnter Admin Password : ")).get_hash()
         if (password==self.admin_pw):
             return True
         else:
             return False
 
-    def authenticate(self,name,password):                                                   #admin login authentication function
+    def authenticate(self,name,password):
         i = admins.Search(admins.root,admin(name,password))
         if(i != None and i.name == name):
             if (i.password == hash(password).get_hash()):
@@ -450,7 +436,7 @@ class admin:
         else:
             return False
 
-    def menu(self):                                                                         #admin functions menu
+    def menu(self):
         print("\n\tA D M I N")
         print("\n\t\t1 - Add Route")
         print("\t\t2 - Delete Route")
@@ -460,7 +446,7 @@ class admin:
         print("\t\t6 - View Users")
         print("\t\tExit")
 
-    def login_menu(self):                                                                   #admin login menu
+    def login_menu(self):
         print("\n\tA D M I N")
         print("\n\t\t1 -  Login")
         print("\t\t2 - Create Account")
@@ -471,13 +457,13 @@ class admin:
         elif(choice == 2):
             self.create_acc()
 
-    def invalid_menu(self):                                                                 #invalid login menu
+    def invalid_menu(self):
         print("\n\tI N V A L I D    L O G I N")
         print("\n\t\t1 - Try Again")
         print("\t\t2 -  Create Account")
         return int(input("\t\tEnter Choice : "))
     
-    def func(self):                                                                         #menu driven functions for admin login
+    def func(self):
         self.menu()
         choice = int(input("\n\t\tEnter Choice : "))
         if (choice == 1):
@@ -514,15 +500,13 @@ class admin:
         else:
             return
 
-#user - stores all the user login details and the functionalities
-
 class user:
 
-    def __init__(self,name,password):                                                       #stores the user login details in the form of hashtable
+    def __init__(self,name,password):
         self.name=name
         self.password=hash(password).get_hash()
 
-    def login(self):                                                                        #user login function
+    def login(self):
         print("\n\tL O G I N")
         name = input("\n\t\tEnter Name : ")
         password = getpass.getpass(prompt="\t\tEnter Password : ")
@@ -535,20 +519,19 @@ class user:
             elif (x==2):
                 self.create_acc()
     
-    def authenticate(self,name,password):                                                   #user login authentication
+    def authenticate(self,name,password):
         x = users.get(hash(password).get_hash())
         if(x != None and x.name == name):
             return True
         else:
             return False
     
-    def create_acc(self):                                                                   #creating new user login
+    def create_acc(self):
         print("\n\tC R E A T E    A C C O U N T")
-        users.add(user(input("\n\t\tEnter Name : "),
-        getpass.getpass(prompt="\t\tEnter Password : ")))        
+        users.add(user(input("\n\t\tEnter Name : "),getpass.getpass(prompt="\t\tEnter Password : ")))        
         self.login()
 
-    def menu(self):                                                                         #user functionalities menu
+    def menu(self):
         print("\n\tU S E R\n")
         print("\t\t1 - Flights From")
         print("\t\t2 - Flights To")
@@ -556,7 +539,7 @@ class user:
         print("\t\t4 - Cheapest Route")
         print("\t\tExit")
     
-    def login_menu(self):                                                                   #user login menu
+    def login_menu(self):
         print("\n\tU S E R")
         print("\n\t\t1 - Login")
         print("\t\t2 - Create Account")
@@ -567,13 +550,13 @@ class user:
         elif(choice == 2):
             self.create_acc()
 
-    def invalid_menu(self):                                                                 #invalid user login menu
+    def invalid_menu(self):
         print("\n\tI N V A L I D    L O G I N")
         print("\n\t\t1 - Try Again")
         print("\t\t2 -  Create Account")
         return int(input("\n\t\tEnter Choice : "))
     
-    def func(self):                                                                         #menu driven function for user login
+    def func(self):
         self.menu()
         choice = int(input("\n\t\tEnter Choice : "))
         if (choice == 1):
@@ -603,18 +586,16 @@ class user:
         else:
             return
 
-#flight - stores the flight details 
-
 class flight:
 
-    def __init__(self,src,dst):                                                             #storing the flight details
+    def __init__(self,src,dst):
         self.src = src+1
         self.dst = dst+1
         self.dist = route.get_dist(src,dst)
         self.time = route.get_time(src,dst)
         self.cost = route.get_cost(src,dst)
 
-def add_data():                                                                             #function to add few test users
+def add_data():
     global route,admins,users,test_admin,test_user
     route = graph()
     admins = splaytree()
@@ -640,7 +621,7 @@ def add_data():                                                                 
     users.add(test_user4)
     users.add(test_user5)
 
-def start():                                                                                #invokes the actual program
+def start():
     print("\n\tA I R L I N E     E N Q U I R Y     S Y S T E M")
     print("\n\t\tE N Q - A I R")
     print("\n\t\t1 - Admin")
