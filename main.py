@@ -1,5 +1,5 @@
-from modules import *           #importing all the data structures, functions and data
+from modules import *
 
-if __name__=="__main__":        #main funtion
-    add_data()                  #adding the pre-created user accounts
-    start()                     #start app
+if __name__=="__main__":
+    add_data()
+    start()
